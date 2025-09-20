@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum departamento{
+  Diretoria
+  RH
+  Financeiro
+  Contabilidade
+  Juridico
+  Comercial
+  Marketing
+  Logistica
+  Compras
+  TI
+}
+
+model Empresa {
+  cnpj      Int       @id
+  nome      String    @db.varchar(55)
+  email     String    @db.varchar(55)
+  telefone  Int  
+}
+
+model Usuario{
+  cpf             Int       @id
+  cnpj_empresa    Int
+  empresa         Empresa   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete: Cascade)
+  nome            String    @db.varchar(255)
+  senha           String    @db.varchar(30)
+  telefone        Int 
+}
+
+model Gestor{
+  id              Int         @id @default(autoincrement())
+  cpf_usuario     Int
+  usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete: Cascade)
+  departamento    Departamento
+}
+
+model Aluno{
+  id              Int         @id @default(autoincrement())
+  cpf_usuario     Int
+  usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete: Cascade)
+  cargo           String      @db.varchar(30)
+  ultimo_acesso   DateTime    @default(now())
+}
+
+model Aluno_Aula{
+  id_aluno      Int     
+  aluno         Aluno       @relation(fields: [id_aluno], references: [id], onDelete: Cascade)
+  id_aula       Int
+  aula          Aula        @relation(fields: [id_aula], references: [id], onDelete: Cascade)
+
+  @id([id_aluno, id_aula])
+}
+
+model Aula{
+  id          Int        @id @default(autoincrement())
+  titulo      String     @db.varchar(30)
+  video       String     @db.varchar(255)
+  imagem      String     @db.varchar(255)
+  duracao     Int
+  material?   String     @db.varchar(255)
+}
+
+model Aluno_Cusro{
+  id_aluno      Int
+  aluno         Aluno   @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
+  id_curso      Int
+  curso         Curso   @relation(fields: [id_curso], references: [id], onDelete:Cascade)
+  data_inicio       DateTime
+  data_fim?         DateTime
+
+  @id([id_aluno, id_curso])
+}
+
+model Curso{
+  id                Int       @id @default(autoincrement())
+  carga_horaria     Int
+  descricao         String    @db.varchar(255)
+}
+
