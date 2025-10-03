@@ -11,3 +11,7 @@ app.get('/', (req, res) => {
         message: "Funcionou"
     })
 })
+
+app.listen(3000, () => {
+    console.log('Servirdor Rodando no http://localhost:3000')
+})
