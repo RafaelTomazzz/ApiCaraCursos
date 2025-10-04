@@ -1,5 +1,6 @@
 import express from "express"
 import cors from 'cors'
+import empresaRouter from "./Router/empresaRouter.js"
 
 const app = express()
 
@@ -15,3 +16,5 @@ app.get('/', (req, res) => {
 app.listen(3000, () => {
     console.log('Servirdor Rodando no http://localhost:3000')
 })
+
+app.use("/empressa", empresaRouter)
