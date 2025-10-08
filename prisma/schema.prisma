@@ -28,17 +28,17 @@ enum Departamento{
 }
 
 model Empresa {
-  cnpj      Int       @id
+  cnpj      BigInt       @id
   nome      String    @db.VarChar(55)
   email     String    @db.VarChar(55)
-  telefone  Int  
+  telefone  String    @db.VarChar(12)
 
   usuarios  Usuario[]
 }
 
 model Usuario{
-  cpf             Int       @id
-  cnpj_empresa    Int
+  cpf             BigInt       @id
+  cnpj_empresa    BigInt
   empresa         Empresa   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete:Cascade)
   nome            String    @db.VarChar(255)
   senha           String    @db.VarChar(30)
@@ -50,14 +50,14 @@ model Usuario{
 
 model Gestor{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     Int
+  cpf_usuario     BigInt
   usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
   departamento    Departamento
 }
 
 model Aluno{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     Int
+  cpf_usuario     BigInt
   usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
   cargo           String      @db.VarChar(30)
   ultimo_acesso   DateTime    @default(now())

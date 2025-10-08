@@ -7,9 +7,7 @@ const empresaSchema = z.object({
     cnpj: z.number({
         invalid_type_error: "O id deve ser um valor numérico",
         required_error: "O cnpj deve ser obrigatorio"
-    })
-    .min(14, "CNPJ deve ter 14 caracteres")
-    .max(14, "CNPJ deve ter 14 caracteres"),
+    }),
 
     nome: z.string({
         invalid_type_error: "O nome deve ser um valor tipo texto",
@@ -25,8 +23,8 @@ const empresaSchema = z.object({
     .min(15, "Mínimo de 15 caracteres")
     .max(50, "Máximo de 50 caracteres"),
 
-    telefone: z.number({
-        invalid_type_error: "O telefone deve ser um valor numérico",
+    telefone: z.string({
+        invalid_type_error: "O telefone deve ser um valor tipo texto",
         required_error: "O telefone deve ser obrigatorio"
     })
 })
@@ -49,7 +47,13 @@ export async function createEmpresa(empresa) {
         }
     })
 
-    return result
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, value) =>
+          typeof value === "bigint" ? value.toString() : value
+        )
+      );
+    
+      return safeResult;
 }
 
 export async function getAllEmpresa() {
@@ -62,13 +66,19 @@ export async function getAllEmpresa() {
         }
     })
 
-    return result
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === "bigint" ? v.toString() : v))
+    );
+    
+    return safeResult;
 }
 
-export async function getByIdEmpresa(id) {
+export async function getByIdEmpresa(Cnpj) {
+    const cnpj = BigInt(Cnpj) 
+
     const result = await prisma.empresa.findUnique({
         where:{
-            id: id
+            cnpj: { cnpj }
         },
 
         select: {
@@ -79,7 +89,11 @@ export async function getByIdEmpresa(id) {
         }
     })
 
-    return result
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === "bigint" ? v.toString() : v))
+    );
+    
+    return safeResult;
 }
 
 export async function deleteEmpresa(id) {

@@ -17,4 +17,4 @@ app.listen(3000, () => {
     console.log('Servirdor Rodando no http://localhost:3000')
 })
 
-app.use("/empressa", empresaRouter)
+app.use("/empresa", empresaRouter)
