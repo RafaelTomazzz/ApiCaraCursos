@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Departamento{
+enum Departamentos{
   Diretoria
   RH
   Financeiro
@@ -27,49 +27,50 @@ enum Departamento{
   TI
 }
 
-model Empresa {
+model Empresas {
   cnpj      String       @id
   nome      String    @db.VarChar(55)
   email     String    @db.VarChar(55)
   telefone  String    @db.VarChar(12)
 
-  usuarios  Usuario[]
+  usuarios  Usuarios[]
 }
 
-model Usuario{
-  cpf             String       @id
+model Usuarios{
+  cpf             BigInt       @id
   cnpj_empresa    String
-  empresa         Empresa   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete:Cascade)
-  nome            String    @db.VarChar(255)
-  senha           String    @db.VarChar(30)
-  telefone        Int
+  empresa         Empresas   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete:Cascade)
+  nome            String    @db.VarChar(20)
+  sobrenome       String    @db.VarChar(20)
+  senha           String    @db.VarChar(20)
+  telefone        Int?
   
-  alunos    Aluno[]
-  gestores  Gestor[] 
+  alunos    Alunos[]
+  gestores  Gestores[] 
 }
 
-model Gestor{
+model Gestores{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     String
-  usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
-  departamento    Departamento
+  cpf_usuario     BigInt
+  usuario         Usuarios     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
+  departamento    Departamentos
 }
 
-model Aluno{
+model Alunos{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     String
-  usuario         Usuario     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
+  cpf_usuario     BigInt
+  usuario         Usuarios     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
   cargo           String      @db.VarChar(30)
   ultimo_acesso   DateTime    @default(now())
 
-  alunos_cursos         Aluno_Curso[]
-  alunos_aulas          Aluno_Aula[]
-  alunos_avaliacaos     Aluno_Avaliacao[]
-  relatoios       Relatorio[]
-  certificados    Certificado[]
+  alunos_cursos         Aluno_Cursos[]
+  alunos_aulas          Aluno_Aulas[]
+  alunos_avaliacaos     Aluno_Avaliacoes[]
+  relatoios       Relatorios[]
+  certificados    Certificados[]
 }
 
-model Aula{
+model Aulas{
   id          Int        @id @default(autoincrement())
   titulo      String     @db.VarChar(30)
   video       String     @db.VarChar(255)
@@ -77,49 +78,49 @@ model Aula{
   duracao     Int
   material    String?     @db.VarChar(255)
 
-  alunos_aulas    Aluno_Aula[]
+  alunos_aulas    Aluno_Aulas[]
 }
 
-model Curso{
+model Cursos{
   id                Int       @id @default(autoincrement())
   carga_horaria     Int
   descricao         String    @db.VarChar(255)
   
-  avaliacoes        Avaliacao[]
-  alunos_cursos     Aluno_Curso[]
-  relatorios        Relatorio[]
-  certificados      Certificado[]
+  avaliacoes        Avaliacoes[]
+  alunos_cursos     Aluno_Cursos[]
+  relatorios        Relatorios[]
+  certificados      Certificados[]
 }
 
-model Avaliacao{
+model Avaliacoes{
   id              Int         @id @default(autoincrement())
   id_curso        Int
-  curso           Curso       @relation(fields: [id_curso], references: [id], onDelete:Cascade)
+  curso           Cursos       @relation(fields: [id_curso], references: [id], onDelete:Cascade)
   titulo          String      @db.VarChar(255)
   duracao         String      @db.VarChar(255)
   data_limite     DateTime?
   tipo            String      @db.VarChar(255)
   nota_max        Int
 
-  alunos_avaliacaos     Aluno_Avaliacao[]
+  alunos_avaliacaos     Aluno_Avaliacoes[]
 }
 
-model Aluno_Avaliacao{
+model Aluno_Avaliacoes{
   id_aluno        Int
-  aluno           Aluno       @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
+  aluno           Alunos       @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
   id_avaliacao    Int
-  avaliacao       Avaliacao   @relation(fields: [id_avaliacao], references: [id], onDelete:Cascade)
+  avaliacao       Avaliacoes   @relation(fields: [id_avaliacao], references: [id], onDelete:Cascade)
   nota            Int
   tempo_duracao   Int
 
   @@id([id_aluno, id_avaliacao])
 }
 
-model Aluno_Curso{
+model Aluno_Cursos{
   id_aluno          Int
-  aluno             Aluno   @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
+  aluno             Alunos   @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
   id_curso          Int
-  curso             Curso   @relation(fields: [id_curso], references: [id], onDelete:Cascade)
+  curso             Cursos   @relation(fields: [id_curso], references: [id], onDelete:Cascade)
   data_inicio       DateTime
   data_fim          DateTime?
 
@@ -127,30 +128,30 @@ model Aluno_Curso{
   
 }
 
-model Aluno_Aula{
+model Aluno_Aulas{
   id_aluno      Int     
-  aluno         Aluno       @relation(fields: [id_aluno], references: [id], onDelete: Cascade)
+  aluno         Alunos       @relation(fields: [id_aluno], references: [id], onDelete: Cascade)
   id_aula       Int
-  aula          Aula        @relation(fields: [id_aula], references: [id], onDelete: Cascade)
+  aula          Aulas        @relation(fields: [id_aula], references: [id], onDelete: Cascade)
 
   @@id([id_aluno, id_aula])
 }
 
-model Relatorio{
+model Relatorios{
   id              Int       @id @default(autoincrement())
   id_aluno        Int
-  aluno           Aluno     @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
+  aluno           Alunos     @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
   id_curso        Int
-  curso           Curso     @relation(fields: [id_curso], references: [id], onDelete:Cascade)
+  curso           Cursos     @relation(fields: [id_curso], references: [id], onDelete:Cascade)
   data_emissao    DateTime
   progresso       Int
 }
 
-model Certificado{
+model Certificados{
   id            Int       @id @default(autoincrement())
   id_aluno      Int
-  aluno         Aluno     @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
+  aluno         Alunos     @relation(fields: [id_aluno], references: [id], onDelete:Cascade)
   id_curso      Int
-  curso         Curso     @relation(fields: [id_curso], references: [id], onDelete:Cascade)
+  curso         Cursos     @relation(fields: [id_curso], references: [id], onDelete:Cascade)
   titulo        String    @db.VarChar(255)
 }
