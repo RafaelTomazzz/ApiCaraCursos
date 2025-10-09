@@ -4,10 +4,11 @@ import { z } from 'zod'
 const prisma = new PrismaClient()
 
 const empresaSchema = z.object({
-    cnpj: z.number({
-        invalid_type_error: "O id deve ser um valor numérico",
+    cnpj: z.string({
+        invalid_type_error: "O id deve ser um valor tipo texto",
         required_error: "O cnpj deve ser obrigatorio"
-    }),
+    })
+    .length(14, "O cnpj deve ter no 14 caracteres"),
 
     nome: z.string({
         invalid_type_error: "O nome deve ser um valor tipo texto",
@@ -31,8 +32,9 @@ const empresaSchema = z.object({
 
 export const empresaValidator = (empresa, partial = null) => {
     if(partial){
-        return empresa.empresaSchema.partial(partial).safeParse(empresa)
+        return empresaSchema.partial(partial).safeParse(empresa)
     }
+
     return empresaSchema.safeParse(empresa)
 }
 
@@ -47,13 +49,7 @@ export async function createEmpresa(empresa) {
         }
     })
 
-    const safeResult = JSON.parse(
-        JSON.stringify(result, (_, value) =>
-          typeof value === "bigint" ? value.toString() : value
-        )
-      );
-    
-      return safeResult;
+    return result
 }
 
 export async function getAllEmpresa() {
@@ -66,19 +62,13 @@ export async function getAllEmpresa() {
         }
     })
 
-    const safeResult = JSON.parse(
-        JSON.stringify(result, (_, v) => (typeof v === "bigint" ? v.toString() : v))
-    );
-    
-    return safeResult;
+    return result
 }
 
-export async function getByIdEmpresa(Cnpj) {
-    const cnpj = BigInt(Cnpj) 
-
+export async function getByIdEmpresa(cnpj) {
     const result = await prisma.empresa.findUnique({
         where:{
-            cnpj: { cnpj }
+            cnpj: cnpj
         },
 
         select: {
@@ -89,17 +79,13 @@ export async function getByIdEmpresa(Cnpj) {
         }
     })
 
-    const safeResult = JSON.parse(
-        JSON.stringify(result, (_, v) => (typeof v === "bigint" ? v.toString() : v))
-    );
-    
-    return safeResult;
+    return result
 }
 
-export async function deleteEmpresa(id) {
+export async function deleteEmpresa(cnpj) {
     const result = await prisma.empresa.delete({
         where: {
-            id: id
+            cnpj: cnpj
         },
         select: {
             cnpj: true,
@@ -112,10 +98,10 @@ export async function deleteEmpresa(id) {
     return result
 }
 
-export async function updateEmpresa(id, empresa) {
+export async function updateEmpresa(cnpj, empresa) {
     const result = await prisma.empresa.update({
         where: {
-            id: id
+            cnpj: cnpj
         }, 
         data: empresa,
         select: {
@@ -125,5 +111,6 @@ export async function updateEmpresa(id, empresa) {
             telefone:true,
         }
     })
-    
+
+    return result
 }
