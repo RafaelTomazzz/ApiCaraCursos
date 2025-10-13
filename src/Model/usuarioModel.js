@@ -42,5 +42,25 @@ const usuarioValidatir = new z.object({
 })
 
 export function createUsuario(usuario){
-    const result = usuario.prisma.create
+    const data = {
+        cpf: BigInt(usuario.cpf)
+    }
+
+    const result = prisma.usuario .create({
+        data: usuario,
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: false,
+            telefone: true
+        }
+    })
+
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return result
 }
