@@ -2,7 +2,7 @@ import { createEmpresa, empresaValidator } from "../../Model/empresaModel.js";
 
 export default async function(req, res){
     const empresa = req.body
-    const { success, error, data } = empresaValidator(empresa);
+    const { success, error, data } = empresaValidator(empresa)
 
     if(!success){
         return res.status(400).json({

@@ -39,7 +39,7 @@ export const empresaValidator = (empresa, partial = null) => {
 }
 
 export async function createEmpresa(empresa) {
-    const result = await prisma.empresa.create({
+    const result = await prisma.Empresas.create({
         data: empresa,
         select: {
             cnpj: true,
@@ -53,7 +53,7 @@ export async function createEmpresa(empresa) {
 }
 
 export async function getAllEmpresa() {
-    const result = await prisma.empresa.findMany({
+    const result = await prisma.Empresas.findMany({
         select: {
             cnpj: true,
             nome: true,
@@ -66,7 +66,7 @@ export async function getAllEmpresa() {
 }
 
 export async function getByIdEmpresa(cnpj) {
-    const result = await prisma.empresa.findUnique({
+    const result = await prisma.Empresas.findUnique({
         where:{
             cnpj: cnpj
         },
@@ -83,7 +83,7 @@ export async function getByIdEmpresa(cnpj) {
 }
 
 export async function deleteEmpresa(cnpj) {
-    const result = await prisma.empresa.delete({
+    const result = await prisma.Empresas.delete({
         where: {
             cnpj: cnpj
         },
@@ -99,7 +99,7 @@ export async function deleteEmpresa(cnpj) {
 }
 
 export async function updateEmpresa(cnpj, empresa) {
-    const result = await prisma.empresa.update({
+    const result = await prisma.Empresas.update({
         where: {
             cnpj: cnpj
         }, 

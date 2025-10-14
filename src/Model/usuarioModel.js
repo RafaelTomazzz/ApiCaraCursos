@@ -3,7 +3,7 @@ import z, { number } from "zod";
 
 const prisma = new PrismaClient();
 
-const usuarioValidatir = new z.object({
+const usuarioSchema = new z.object({
     cpf: z.number({
         invalid_type_error: "O cpf deve ser um valor numérico",
         required_error: "O cpf deve ser obrigatório"
@@ -41,13 +41,26 @@ const usuarioValidatir = new z.object({
     })
 })
 
-export function createUsuario(usuario){
-    const data = {
-        cpf: BigInt(usuario.cpf)
+export const usuarioValidator = (usuario, partial = null) => {
+    if(partial){
+        return usuarioSchema.partial(partial).safeParse(usuario)
     }
 
-    const result = prisma.usuario .create({
-        data: usuario,
+    return empresaSchema.safeParse(usuario)
+}
+
+export async function createUsuario(usuario){
+    const data = {
+        cpf: BigInt(usuario.cpf),
+        nome: usuario.nome,
+        sobrenome: usuario.sobrenome,
+        senha: usuario.senha,
+        telefone: usuario.telefone,
+        cnpj_empresa: usuario.cnpj_empresa
+    }
+
+    const result = await prisma.Usuarios.create({
+        data: data,
         select: {
             cpf: true,
             cnpj_empresa: true,
@@ -62,5 +75,5 @@ export function createUsuario(usuario){
         JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
     )
 
-    return result
+    return safeResult
 }
