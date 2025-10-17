@@ -2,9 +2,9 @@ import { getUsuario, usuarioValidator } from "../../Model/usuarioModel.js";
 
 export default async function getUsuarioController(req, res) {
     try{
-        const {cpf} = req.params.cpf
+        const { cpf } = req.params
 
-        const usuario = { cpf: cpf }
+        const usuario = { cpf: +cpf }
         const { success, error, data} = usuarioValidator(usuario, {cnpj_empresa: true, nome: true, sobrenome: true, senha: true, telefone: true})
     
         if(!success) {
@@ -14,7 +14,7 @@ export default async function getUsuarioController(req, res) {
             })
         }
 
-        const result = await getUsuarioController(cpf)
+        const result = await getUsuario(+cpf)
 
         if(!result){
             return res.status(500).json({
