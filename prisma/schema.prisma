@@ -43,7 +43,7 @@ model Usuarios{
   nome            String    @db.VarChar(20)
   sobrenome       String    @db.VarChar(20)
   senha           String    @db.VarChar(20)
-  telefone        Int?
+  telefone        String?
   
   alunos    Alunos[]
   gestores  Gestores[] 

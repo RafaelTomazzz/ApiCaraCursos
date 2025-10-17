@@ -26,5 +26,10 @@ export default async function createUsuarioController(req, res) {
         })
 
     }
-    catch(er){}
+    catch(er){
+        return res.status(500).json({
+            message: "Erro!",
+            errors: er.message
+        })
+    }
 }

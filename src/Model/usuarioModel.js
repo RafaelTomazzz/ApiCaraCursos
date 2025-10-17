@@ -9,7 +9,7 @@ const usuarioSchema = new z.object({
         required_error: "O cpf deve ser obrigatório"
     }),
 
-    cnpj: z.string({
+    cnpj_empresa: z.string({
         invalid_type_error: "O id deve ser um valor tipo texto",
         required_error: "O cnpj deve ser obrigatorio"
     })
@@ -36,9 +36,10 @@ const usuarioSchema = new z.object({
     .max(20, "Senha deve ter no máximo 20 caracteres")
     .min(6, "Senha deve ter no mínimo 6 caracteres"),
 
-    telefone: z.number({
-        invalid_type_error: "Telefone deve ser um valor numérico"
+    telefone: z.string({
+        invalid_type_error: "Telefone deve ser um valor tipo texto"
     })
+    .nullish()
 })
 
 export const usuarioValidator = (usuario, partial = null) => {
@@ -46,7 +47,7 @@ export const usuarioValidator = (usuario, partial = null) => {
         return usuarioSchema.partial(partial).safeParse(usuario)
     }
 
-    return empresaSchema.safeParse(usuario)
+    return usuarioSchema.safeParse(usuario)
 }
 
 export async function createUsuario(usuario){
@@ -72,6 +73,47 @@ export async function createUsuario(usuario){
     })
 
     const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function listUsuario(req, res) {
+    const result = await prisma.Usuarios.findMany({
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: false,
+            telefone: true
+        }
+    })
+
+    const safeResult =  JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function getUsuario(cpf) {
+    const result = await prisma.Usuarios.findUnique({
+        where: {
+            cpf: cpf
+        },
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: false,
+            telefone: true
+        }
+    })
+
+    const safeResult =  JSON.parse(
         JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
     )
 
