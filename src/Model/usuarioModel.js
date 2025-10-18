@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import z, { number } from "zod";
+import z, { bigint, number } from "zod";
 
 const prisma = new PrismaClient();
 
@@ -103,6 +103,60 @@ export async function getUsuario(cpf) {
         where: {
             cpf: cpf
         },
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: false,
+            telefone: true
+        }
+    })
+
+    const safeResult =  JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function deleteUsuario(cpf) {
+    const result = await prisma.Usuarios.delete({
+        where: {
+            cpf: cpf
+        },
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: false,
+            telefone: true
+        }
+    })
+
+    const safeResult =  JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function updateUsuario(usuario, cpf) {
+    const data = {
+        cpf: BigInt(usuario.cpf),
+        nome: usuario.nome,
+        sobrenome: usuario.sobrenome,
+        senha: usuario.senha,
+        telefone: usuario.telefone,
+        cnpj_empresa: usuario.cnpj_empresa
+    }
+    
+    const result = await prisma.Usuarios.update({
+        where: {
+            cpf: BigInt(cpf)
+        },
+        data: data,
         select: {
             cpf: true,
             cnpj_empresa: true,
