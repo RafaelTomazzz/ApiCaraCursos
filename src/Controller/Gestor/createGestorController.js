@@ -1,10 +1,11 @@
 import { createGestor, gestorValidator } from "../../Model/gestorModel.js";
+import z from "zod";
 
 export default async function createGestorController(req, res){
     try {
         const gestor = req.body
-
-        const { success, error, data } = gestorValidator(gestor)
+        const { success, data, error } = await gestorValidator(gestor)
+        
         if(!success){
             return res.status(400).json({
             message: "Não foi possível validar a empresa",

@@ -24,7 +24,7 @@ export async function gestorValidator(gestor, partial = null) {
 }
 
 export async function createGestor(gestor) {
-    data = {
+    const data = {
         cpf_usuario: BigInt(gestor.cpf_usuario),
         departamento: gestor.departamento
     }
@@ -79,4 +79,50 @@ export async function getGestor(cpf){
     )
 
     return safeResult
+}
+
+export async function deleteGestor(cpf) {
+    const result = await prisma.Gestores.delete({
+        where: {
+            cpf_usuario: cpf
+        },
+        select: {
+            id: true,
+            cpf_usuario: true,
+            departamento: true
+        }
+    })
+    
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function updateGestor(gestor, cpf) {
+
+    const data = {
+        cpf_usuario: gestor.cpf_usuario,
+        departamento: gestor.departamento
+    }
+
+    const result = await prisma.Gestores.update({
+        where: {
+            cpf_usuario: cpf
+        },
+        data: data,
+        select: {
+            id: true,
+            cpf_usuario: true,
+            departamento: true
+        }
+    })
+    
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+
 }

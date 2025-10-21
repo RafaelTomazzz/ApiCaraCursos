@@ -38,7 +38,7 @@ model Empresas {
 
 model Usuarios{
   cpf             BigInt       @id
-  cnpj_empresa    String
+  cnpj_empresa    String       
   empresa         Empresas   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete:Cascade)
   nome            String    @db.VarChar(20)
   sobrenome       String    @db.VarChar(20)
@@ -51,14 +51,14 @@ model Usuarios{
 
 model Gestores{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     BigInt
+  cpf_usuario     BigInt      @unique
   usuario         Usuarios     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
   departamento    Departamentos
 }
 
 model Alunos{
   id              Int         @id @default(autoincrement())
-  cpf_usuario     BigInt
+  cpf_usuario     BigInt      @unique
   usuario         Usuarios     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
   cargo           String      @db.VarChar(30)
   ultimo_acesso   DateTime    @default(now())
