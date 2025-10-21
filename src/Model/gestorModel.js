@@ -31,7 +31,7 @@ export async function createGestor(gestor) {
 
     const result = await prisma.Gestores.create({
         data: data,
-        Select: {
+        select: {
             id: true,
             cpf_usuario: true,
             departamento: true
@@ -44,4 +44,39 @@ export async function createGestor(gestor) {
 
     return safeResult
     
+}
+
+export async function listGestor() {
+    const result = await prisma.Gestores.findMany({
+        select: {
+            id: true,
+            cpf_usuario: true,
+            departamento: true
+        }
+    })
+
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function getGestor(cpf){
+    const result = await prisma.Gestores.findUnique({
+        where: {
+            cpf_usuario: cpf
+        },
+        select: {
+            id: true,
+            cpf_usuario: true,
+            departamento: true
+        }
+    })
+
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
 }
