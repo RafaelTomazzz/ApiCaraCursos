@@ -59,8 +59,9 @@ model Gestores{
 model Alunos{
   id              Int         @id @default(autoincrement())
   cpf_usuario     BigInt      @unique
-  usuario         Usuarios     @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
-  cargo           String      @db.VarChar(30)
+  usuario         Usuarios    @relation(fields: [cpf_usuario], references: [cpf], onDelete:Cascade)
+  cargo           String?     @db.VarChar(30)
+  departamento    Departamentos
   ultimo_acesso   DateTime    @default(now())
 
   alunos_cursos         Aluno_Cursos[]

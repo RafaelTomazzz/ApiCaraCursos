@@ -8,7 +8,7 @@ export default async function createGestorController(req, res){
         
         if(!success){
             return res.status(400).json({
-            message: "Não foi possível validar a empresa",
+            message: "Não foi possível validar o gestor",
             errors: error.flatten().fieldErrors
         })
         }
