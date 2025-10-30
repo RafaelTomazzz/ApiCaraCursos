@@ -104,7 +104,7 @@ export async function deleteAluno(cpf) {
         where: {
             cpf_usuario: cpf
         },
-                select: {
+        select: {
             id: true,
             cpf_usuario: true,
             cargo: true,
@@ -118,4 +118,33 @@ export async function deleteAluno(cpf) {
     )
 
     return safeResult   
+}
+
+export async function updateAluno(cpf, aluno) {
+    const data = {
+        cpf_usuario: BigInt(aluno.cpf_usuario),
+        cargo: aluno.cargo,
+        departamento: aluno.departamento
+    }
+
+    const result = await prisma.Alunos.update({
+        where: {
+            cpf_usuario: cpf
+        },
+        data: data,
+        select: {
+            id: true,
+            cpf_usuario: true,
+            cargo: true,
+            departamento: true,
+            ultimo_acesso: true
+        }
+    })
+
+    const safeResult = JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+
 }

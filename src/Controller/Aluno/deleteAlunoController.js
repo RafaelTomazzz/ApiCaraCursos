@@ -23,7 +23,7 @@ export default async function deleteAlunoController(req, res) {
         }
 
         return res.status(200).json({
-            message: "Alnuo encontrado com sucesso",
+            message: "Alnuo deletado com sucesso",
             aluno: result
         })
     } catch (er) {

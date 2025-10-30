@@ -71,6 +71,27 @@ async function main() {
     await prisma.Gestores.create({
         data: dataGestor
     })
+
+
+    const dataAluno1 = {
+        cpf_usuario: 84724636050,
+        cargo: "Estagiário",
+        departamento: "Contabilidade"
+    }
+
+    const dataAluno2 = {
+        cpf_usuario: 34765490033,
+        cargo: "Estagiário",
+        departamento: "Comercial"
+    }
+
+    await prisma.Alunos.create({
+        data: dataAluno1
+    })
+
+    await prisma.Alunos.create({
+        data: dataAluno2
+    })
 }
 
 main()
