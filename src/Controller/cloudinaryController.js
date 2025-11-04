@@ -32,7 +32,7 @@ export async function uploadVideo(req, res) {
     try {
         const { caminho } = req.body
         
-        const result = await cloudinary.uploader.upload(caminho, {
+        const result = await cloudinary.uploader.upload_large(caminho, {
             folder: "videoAula",
             resource_type: "video"
         })
