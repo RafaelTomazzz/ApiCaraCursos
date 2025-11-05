@@ -43,6 +43,7 @@ export async function createAula(aula) {
     const result = await prisma.Aulas.create({
         data: aula,
         select: {
+            id: true,
             titulo: true,
             video: true,
             imagem: true,
@@ -57,6 +58,7 @@ export async function createAula(aula) {
 export async function listAula() {
     const result = await prisma.Aulas.findMany({
         select: {
+            id: true,
             titulo: true,
             video: true,
             imagem: true,
@@ -74,6 +76,7 @@ export async function getAula(id) {
             id: id
         },
         select: {
+            id: true,
             titulo: true,
             video: true,
             imagem: true,
@@ -91,6 +94,7 @@ export async function deleteAula(id) {
             id: id
         },
         select: {
+            id: true,
             titulo: true,
             video: true,
             imagem: true,
@@ -107,6 +111,7 @@ export async function updateAula(id, aula) {
         },
         data: aula,
         select: {
+            id: true, 
             titulo: true,
             video: true,
             imagem: true,

@@ -92,6 +92,28 @@ async function main() {
     await prisma.Alunos.create({
         data: dataAluno2
     })
+
+    const dataAula1 = {
+        titulo: "Excel para iniciantes - Aula 1",
+        video: "https://res.cloudinary.com/dp2lks0dw/video/upload/v1762300086/videoAula/spky43vmcs5z0fua8dtk.mp4",
+        imagem: "https://res.cloudinary.com/dp2lks0dw/image/upload/v1762296951/imagemAula/sos9gfvi7letekiqtasv.jpg",
+        duracao: 8
+    }
+
+    const dataAula2 = {
+        titulo: "Excel para iniciantes - Aula 2",
+        video: "https://res.cloudinary.com/dp2lks0dw/video/upload/v1762300086/videoAula/spky43vmcs5z0fua8dtk.mp4",
+        imagem: "https://res.cloudinary.com/dp2lks0dw/image/upload/v1762296951/imagemAula/sos9gfvi7letekiqtasv.jpg",
+        duracao: 8
+    }
+
+    await prisma.Aulas.create({
+        data: dataAula1
+    })
+
+    await prisma.Aulas.create({
+        data: dataAula2
+    })
 }
 
 main()
