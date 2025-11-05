@@ -12,7 +12,7 @@ export default async function createAulaController(req, res) {
             })
         }
 
-        const result = await aulaValidator()
+        const result = await createAula(aula)
         
         if(!result){
             return res.status(500).json({
