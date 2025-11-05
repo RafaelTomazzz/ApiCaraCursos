@@ -25,17 +25,96 @@ const aulaSchema = z.object({
     }),
 
     material: z.string({
-        invalid_type_error: "O material deve ser um valor tipo texto",
-        required_error: "O material deve ser obrigatório"
+        invalid_type_error: "O material deve ser um valor tipo texto"
     })
+    .nullish()
     
 })
 
-export async function aulaValidator(aula, partial=null) {
+export async function aulaValidator(aula, partial = null) {
     if(partial){
-        return aulaSchema.partial(partial).safeParse(aluno)
+        return aulaSchema.partial(partial).safeParse(aula)
     }
 
-    return aulaSchema.safeParse(aluno)
+    return aulaSchema.safeParse(aula)
+}
+
+export async function createAula(aula) {
+    const result = await prisma.Aulas.create({
+        data: aula,
+        select: {
+            titulo: true,
+            video: true,
+            imagem: true,
+            duracao: true,
+            material: true
+        }
+    })
+
+    return result
+}
+
+export async function listAula() {
+    const result = await prisma.Aulas.findMany({
+        select: {
+            titulo: true,
+            video: true,
+            imagem: true,
+            duracao: true,
+            material: true
+        }
+    })
+    
+    return result
+}
+
+export async function getAula(id) {
+    const result = await prisma.Aulas.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            titulo: true,
+            video: true,
+            imagem: true,
+            duracao: true,
+            material: true
+        }
+    })
+    
+    return result
+}
+
+export async function deleteAula(id) {
+    const result = await prisma.Aulas.delete({
+        where: {
+            id: id
+        },
+        select: {
+            titulo: true,
+            video: true,
+            imagem: true,
+            duracao: true,
+            material: true
+        }
+    })
+}
+
+export async function updateAula(id, aula) {
+    const result = await prisma.Aulas.update({
+        where: {
+            id: id
+        },
+        data: aula,
+        select: {
+            titulo: true,
+            video: true,
+            imagem: true,
+            duracao: true,
+            material: true
+        }
+    })
+    
+    return result
 }
 
