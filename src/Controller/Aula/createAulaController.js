@@ -3,7 +3,7 @@ import { createAula, aulaValidator } from "../../Model/aulaModel.js"
 export default async function createAulaController(req, res) {
     try {
         const aula = req.body
-        const { success, error, data } = await aulaValidator(aula)
+        const { success, error, data } = await aulaValidator(aula, {id: true})
 
         if(!success){
             return res.status(400).json({

@@ -4,7 +4,7 @@ export default async function getAulaController(req, res) {
     try {
         const { id } = req.params
         
-        const result = await getAula(id)
+        const result = await getAula(+id)
 
         if(!result){
             return res.status(500).json({

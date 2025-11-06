@@ -4,6 +4,11 @@ import { z } from 'zod'
 const prisma = new PrismaClient()
 
 const aulaSchema = z.object({
+    id: z.number({
+        invalid_type_error: "O id deve ser um valor numérico",
+        required_error: "O id deve ser obrigatório"
+    }),
+
     titulo: z.string({
         invalid_type_error: "O título deve ser um valor tipo texto",
         required_error: "O título deve ser obrigatório"
@@ -102,6 +107,8 @@ export async function deleteAula(id) {
             material: true
         }
     })
+
+    return result
 }
 
 export async function updateAula(id, aula) {
