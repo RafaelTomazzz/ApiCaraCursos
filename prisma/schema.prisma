@@ -85,6 +85,7 @@ model Aulas{
 model Cursos{
   id                Int       @id @default(autoincrement())
   carga_horaria     Int
+  nome              String    @db.VarChar(30)
   descricao         String    @db.VarChar(255)
   
   avaliacoes        Avaliacoes[]
