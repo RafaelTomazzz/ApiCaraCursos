@@ -114,6 +114,26 @@ async function main() {
     await prisma.Aulas.create({
         data: dataAula2
     })
+
+    const dataCurso1 = {
+        carga_horaria: 6,
+        nome: "Excel para iniciantes",
+        descricao: "Curso introdutorio ao excel, tem como objetivo mostrar seus princípios básico, de duração de 6 horas" 
+    }
+
+    const dataCurso2 = {
+        carga_horaria: 8,
+        nome: "Word para iniciantes",
+        descricao: "Curso introdutorio ao word, tem como objetivo mostrar seus princípios básico, de duração de 8 horas" 
+    }
+
+    await prisma.cursos.create({
+        data: dataCurso1
+    })
+
+    await prisma.cursos.create({
+        data: dataCurso2
+    })
 }
 
 main()
