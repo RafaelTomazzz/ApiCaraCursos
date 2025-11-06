@@ -6,6 +6,7 @@ import gestorRouter from "./Router/gestorRouter.js"
 import alunoRouter from "./Router/alunoRouter.js"
 import cloudinaryRouter from "./Router/cloudinaryRouter.js"
 import aulaRouter from "./Router/aulaRouter.js"
+import alunoAulaRouter from "./Router/alunoAulaRouter.js"
 
 const app = express()
 
@@ -28,3 +29,4 @@ app.use("/gestor", gestorRouter)
 app.use("/aluno", alunoRouter)
 app.use("/upload", cloudinaryRouter)
 app.use("/aula", aulaRouter)
+app.use("/alunoaula", alunoAulaRouter)
