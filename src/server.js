@@ -8,6 +8,7 @@ import cloudinaryRouter from "./Router/cloudinaryRouter.js"
 import aulaRouter from "./Router/aulaRouter.js"
 import alunoAulaRouter from "./Router/alunoAulaRouter.js"
 import cursoRouter from "./Router/cursoRouter.js"
+import alunoCursoRouter from "./Router/alunoCursoRouter.js"
 
 const app = express()
 
@@ -32,3 +33,4 @@ app.use("/upload", cloudinaryRouter)
 app.use("/aula", aulaRouter)
 app.use("/alunoaula", alunoAulaRouter)
 app.use("/curso", cursoRouter)
+app.use("/alunocurso", alunoCursoRouter)

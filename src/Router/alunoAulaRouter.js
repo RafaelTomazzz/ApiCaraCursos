@@ -9,6 +9,6 @@ const router = e.Router()
 router.post("/create", createAlunoAulaController)
 router.get("/list", listAlunoAulaController)
 router.delete("/delete", deleteAlunoAulaController)
-router.get("/getbyid/:id_aluno", listAlunoAulaController)
+router.get("/getbyid/:id_aluno", listByIdAlunoAulaController)
 
 export default router

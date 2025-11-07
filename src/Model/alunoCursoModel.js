@@ -24,8 +24,15 @@ export async function alunoCursoValidator(alunoCurso, partial = null) {
 }
 
 export async function createAlunoCurso(alunoCurso) {
+    const data = {
+        id_aluno: alunoCurso.id_aluno,
+        id_curso: alunoCurso.id_curso,
+        data_inicio: new Date(),
+        data_fim: alunoCurso.data_fim
+    }
+    
     const result = await prisma.Aluno_Cursos.create({
-        data: alunoCurso,
+        data: data,
         select:{
             id_aluno: true,
             id_curso: true,
