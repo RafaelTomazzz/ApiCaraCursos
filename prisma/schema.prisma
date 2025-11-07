@@ -42,7 +42,7 @@ model Usuarios{
   empresa         Empresas   @relation(fields: [cnpj_empresa], references: [cnpj], onDelete:Cascade)
   nome            String    @db.VarChar(20)
   sobrenome       String    @db.VarChar(20)
-  senha           String    @db.VarChar(20)
+  senha           String    
   telefone        String?
   
   alunos    Alunos[]

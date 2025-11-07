@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import z, { bigint, number } from "zod";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -51,11 +52,13 @@ export const usuarioValidator = (usuario, partial = null) => {
 }
 
 export async function createUsuario(usuario){
+    const hash = await bcrypt.hash(usuario.senha, 10)
+
     const data = {
         cpf: BigInt(usuario.cpf),
         nome: usuario.nome,
         sobrenome: usuario.sobrenome,
-        senha: usuario.senha,
+        senha: hash,
         telefone: usuario.telefone,
         cnpj_empresa: usuario.cnpj_empresa
     }
@@ -112,6 +115,32 @@ export async function getUsuario(cpf) {
             telefone: true
         }
     })
+
+    
+
+    const safeResult =  JSON.parse(
+        JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))
+    )
+
+    return safeResult
+}
+
+export async function getUsuarioSenha(cpf) {
+    const result = await prisma.Usuarios.findUnique({
+        where: {
+            cpf: cpf
+        },
+        select: {
+            cpf: true,
+            cnpj_empresa: true,
+            nome: true,
+            sobrenome: true,
+            senha: true,
+            telefone: true
+        }
+    })
+
+    
 
     const safeResult =  JSON.parse(
         JSON.stringify(result, (_, v) => (typeof v === 'bigint' ? v.toString() : v))

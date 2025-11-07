@@ -4,6 +4,7 @@ import listUsuarioController from "../Controller/Usuarios/listUsuarioController.
 import getUsuarioController from "../Controller/Usuarios/getUsuarioController.js";
 import deleteUsuarioController from "../Controller/Usuarios/deleteUsuarioController.js";
 import updateUsuarioController from "../Controller/Usuarios/updateUsuatioController.js";
+import loginController from "../Controller/Usuarios/loginController.js";
 
 const router = e.Router();
 
@@ -12,5 +13,6 @@ router.get("/list", listUsuarioController)
 router.get("/get/:cpf", getUsuarioController)
 router.delete("/delete/:cpf", deleteUsuarioController)
 router.put("/update/:cpf", updateUsuarioController)
+router.post("/login/:cpf/:senha", loginController)
 
 export default router;
