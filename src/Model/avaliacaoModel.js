@@ -42,3 +42,94 @@ const avaliacaoSchema = z.object({
     })
 
 })
+
+export async function createAvaliacao(avaliacao) {
+    const result = await prisma.Avaliacoes.create({
+        data: avaliacao,
+        select: {
+            id: true,
+            id_curso: true,
+            titulo: true,
+            duracao: true,
+            data_limite: true,
+            tipo: true,
+            nota_max: true
+        }
+    })
+
+    return result
+}
+
+export async function listAvaliacao(){
+    const result = await prisma.Avaliacoes.findMany({
+        select: {
+            id: true,
+            id_curso: true,
+            titulo: true,
+            duracao: true,
+            data_limite: true,
+            tipo: true,
+            nota_max: true
+        }       
+    })
+
+    return result
+}
+
+export async function getAvaliacao(id) {
+    const result = await prisma.Avaliacoes.findUnique({
+        where: {
+            id: id
+        },         
+        select: {
+            id: true,
+            id_curso: true,
+            titulo: true,
+            duracao: true,
+            data_limite: true,
+            tipo: true,
+            nota_max: true
+        }
+    })
+
+    return result
+}
+
+export async function deleteAvaliacao(id) {
+    const result = await prisma.Avaliacoes.delete({
+        where: {
+            id: id
+        },
+        select: {
+            id: true,
+            id_curso: true,
+            titulo: true,
+            duracao: true,
+            data_limite: true,
+            tipo: true,
+            nota_max: true
+        }
+    })
+
+    return result
+}
+
+export async function updateAvaliacao(id, avaliacao) {
+    const result = await prisma.Avaliacoes.update({
+        where: {
+            id: id
+        },
+        data: avaliacao,
+        select: {
+            id: true,
+            id_curso: true,
+            titulo: true,
+            duracao: true,
+            data_limite: true,
+            tipo: true,
+            nota_max: true
+        }
+    })
+    
+    return result
+}
