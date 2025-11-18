@@ -13,6 +13,7 @@ router.get("/list", listUsuarioController)
 router.get("/get/:cpf", getUsuarioController)
 router.delete("/delete/:cpf", deleteUsuarioController)
 router.put("/update/:cpf", updateUsuarioController)
-router.post("/login/:cpf/:senha", loginController)
+//router.post("/login/:cpf/:senha", loginController)
+router.post("/login", loginController)
 
 export default router;

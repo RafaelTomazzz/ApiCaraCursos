@@ -3,7 +3,7 @@ import { updateUsuario, usuarioValidator } from "../../Model/usuarioModel.js"
 export default async function updateUsuarioController(req, res) {
     try {
         const { cpf } = req.params
-        console.log(cpf)
+        console.log(senha)
 
         const usuario = req.body
         const { success, error, data} = usuarioValidator(usuario)

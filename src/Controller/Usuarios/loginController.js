@@ -4,10 +4,8 @@ import bcrypt from "bcryptjs";
 
 export default async function loginController(req, res) {
     try {
-        const { cpf } = req.params
-        const { senha } = req.params
+        const usuario_validator = req.body
 
-        const usuario_validator = { cpf: +cpf }
         const { success, data, error } = await usuarioValidator(usuario_validator, { cnpj_empresa: true, nome: true, sobrenome: true, senha: true, telefone: true })
 
         if (!success) {
@@ -17,7 +15,7 @@ export default async function loginController(req, res) {
             })
         }
 
-        const usuario = await getUsuarioSenha(+cpf)
+        const usuario = await getUsuarioSenha(usuario_validator.cpf)
 
         if (!usuario) {
             return res.status(400).json({
@@ -25,7 +23,7 @@ export default async function loginController(req, res) {
             })
         }
 
-        const senhaValidator = await bcrypt.compare(senha, usuario.senha)
+        const senhaValidator = await bcrypt.compare(usuario_validator.senha, usuario.senha)
         if(!senhaValidator){
             return res.status(400).json({
                 message: "Senha ou CPF incorretos"
